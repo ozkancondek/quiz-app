@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Difficulty, fetchQuizQuestions, QuestionsState } from "./API";
 import { QuestionCard } from "./components/QuestionCard";
+import { GlobalStyle, Wrapper } from "./styles/App.styles";
 
-type AnswerObject = {
+export type AnswerObject = {
   question: string;
   answer: string;
   correct: boolean;
@@ -35,7 +36,7 @@ const App = () => {
     setLoading(false);
   };
 
-  const checkAnswer = (e: any) => {
+  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!gameOver) {
       // User's answer
       const answer = e.currentTarget.value;
@@ -64,35 +65,38 @@ const App = () => {
     }
   };
   return (
-    <div className="App">
-      <h1>TypeScript-React Quiz</h1>
-      {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
-        <button className="start" onClick={startTrivia}>
-          Start
-        </button>
-      ) : null}
-      {!gameOver ? <p className="scor"> Score:</p> : null}
-      {loading ? <p>Loading Questions...</p> : null}
-      {!loading && !gameOver && (
-        <QuestionCard
-          /*  give props of the component   */
-          questionNr={number + 1}
-          totalQuestions={TOTAL_QUESTIONS}
-          question={questions[number].question}
-          answers={questions[number].answers}
-          userAnswer={userAnswers ? userAnswers[number] : undefined}
-          callback={checkAnswer}
-        />
-      )}
-      {!gameOver &&
-      !loading &&
-      userAnswers.length === number + 1 &&
-      number !== TOTAL_QUESTIONS - 1 ? (
-        <button className="next" onClick={nextQuestion}>
-          Next
-        </button>
-      ) : null}
-    </div>
+    <>
+      <GlobalStyle />
+      <Wrapper className="App">
+        <h1>TypeScript-React Quiz</h1>
+        {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
+          <button className="start" onClick={startTrivia}>
+            Start
+          </button>
+        ) : null}
+        {!gameOver ? <p className="score"> Score: {score}</p> : null}
+        {loading ? <p>Loading Questions...</p> : null}
+        {!loading && !gameOver && (
+          <QuestionCard
+            /*  give props of the component   */
+            questionNr={number + 1}
+            totalQuestions={TOTAL_QUESTIONS}
+            question={questions[number].question}
+            answers={questions[number].answers}
+            userAnswer={userAnswers ? userAnswers[number] : undefined}
+            callback={checkAnswer}
+          />
+        )}
+        {!gameOver &&
+        !loading &&
+        userAnswers.length === number + 1 &&
+        number !== TOTAL_QUESTIONS - 1 ? (
+          <button className="next" onClick={nextQuestion}>
+            Next
+          </button>
+        ) : null}
+      </Wrapper>
+    </>
   );
 };
 

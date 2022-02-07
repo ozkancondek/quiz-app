@@ -34,7 +34,6 @@ export const fetchQuizQuestions = async (
     ]),
   }));
 };
-console.log(fetchQuizQuestions(10, Difficulty.EASY));
 
 /* export const fetchQuizQuestionsWithAxios = async (
   amount: number,
